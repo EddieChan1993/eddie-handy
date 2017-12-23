@@ -73,6 +73,7 @@ func (this *object)thinkTime(all float64)  {
 	//拼接完整时间格式
 	upTimeFormat =fmt.Sprintf("%s %02d:%02d:%02d",upTimeFormat,hInt,mInt,sInt)
 
+
 	//获取当地时区
 	loc,_:=time.LoadLocation("Local")
 	//返回Time结构体
@@ -85,7 +86,6 @@ func (this *object)thinkTime(all float64)  {
 		SunFormatTime: upTimeFormat,
 		SunStampTime:  tm2.Unix(),
 	}
-
 	this.sunTime=sumT
 }
 
