@@ -11,7 +11,7 @@ import (
 	"errors"
 )
 
-var All float64
+var allVal float64
 
 const (
 	SUN_RISE=1//日出
@@ -34,11 +34,11 @@ type sunTime struct {
 	SunStampTime  int64
 }
 
-func NewObject(lit,lat float64,zone int)*object{
+func NewObject(lng,lat float64,zone int)*object{
 	return &object{
-		longitude:lit,
-		latitude:lat,
-		zone:zone,
+		longitude: lng,
+		latitude:  lat,
+		zone:      zone,
 	}
 }
 
@@ -57,7 +57,7 @@ func (this *object)getMHS()  {
 
 func (this *object)thinkTime(all float64)  {
 	//截取小数点后两位
-	AllTime :=fmt.Sprintf("%.2f",All)
+	AllTime :=fmt.Sprintf("%.2f", allVal)
 
 	Time :=com_func.StringToFloat64(AllTime)
 	//获取时分秒
@@ -73,13 +73,14 @@ func (this *object)thinkTime(all float64)  {
 	//拼接完整时间格式
 	upTimeFormat =fmt.Sprintf("%s %02d:%02d:%02d",upTimeFormat,hInt,mInt,sInt)
 
+
+	//获取当地时区
 	loc,_:=time.LoadLocation("Local")
 	//返回Time结构体
 	tm2,err :=time.ParseInLocation("2006-01-02 15:04:05",upTimeFormat,loc)
 	if err != nil{
 		this.err=err
 	}
-
 
 	sumT:= sunTime{
 		SunFormatTime: upTimeFormat,
@@ -92,11 +93,11 @@ func (this *object) GetSunTime(sun_flag int) (sunT sunTime,err error) {
 	this.getMHS()
 
 	if sun_flag==SUN_RISE {
-		All =(180+(+8)*15- this.longitude-this.h_m_s)/ 15
-		this.thinkTime(All)
+		allVal =(180+(+8)*15- this.longitude-this.h_m_s)/ 15
+		this.thinkTime(allVal)
 	}else if sun_flag==SUN_SET {
-		All=(180+(+8)*15-this.longitude+this.h_m_s)/ 15
-		this.thinkTime(All)
+		allVal =(180+(+8)*15-this.longitude+this.h_m_s)/ 15
+		this.thinkTime(allVal)
 	}else {
 		this.err=errors.New("sun_flag参数传入错误")
 	}
