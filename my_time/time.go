@@ -15,7 +15,7 @@ func FormatToStamp(timeStamp int64,timeVal string) string {
 	if timeVal!=YMD_HIS&&timeVal!=YMD {
 		log.Fatalln("timeVal参数不在指定范围")
 	}
-		return time.Unix(timeStamp,0).Format(timeVal)
+	return time.Unix(timeStamp,0).Format(timeVal)
 }
 
 //时间戳转为标准格式

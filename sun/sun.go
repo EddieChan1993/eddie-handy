@@ -64,7 +64,7 @@ func (this *object)thinkTime(all float64)  {
 	hour:=math.Floor(Time)
 	min:=math.Floor((Time - hour)*60)
 	sec:=math.Floor(((Time-hour)*60-min)*60)
-	upTimeFormat:=time.Now().Format("2006-01-02")
+	upTimeFormat:=time.Now().Format("2006/01/02")
 
 	hInt:=com_func.Float64ToInt64(hour)
 	mInt:=com_func.Float64ToInt64(min)
@@ -72,12 +72,10 @@ func (this *object)thinkTime(all float64)  {
 
 	//拼接完整时间格式
 	upTimeFormat =fmt.Sprintf("%s %02d:%02d:%02d",upTimeFormat,hInt,mInt,sInt)
-
-
 	//获取当地时区
 	loc,_:=time.LoadLocation("Local")
 	//返回Time结构体
-	tm2,err :=time.ParseInLocation("2006-01-02 15:04:05",upTimeFormat,loc)
+	tm2,err :=time.ParseInLocation("2006/01/02 15:04:05",upTimeFormat,loc)
 	if err != nil{
 		this.err=err
 	}
