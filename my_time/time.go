@@ -25,7 +25,7 @@ func StampToFormat(format string,timeVal string) int64 {
 	}
 
 	loc,_:=time.LoadLocation("Local")//获取当地时区
-	tm2,err :=time.ParseInLocation("2006-01-02 15:04:05",format,loc)
+	tm2,err :=time.ParseInLocation(timeVal,format,loc)
 	if err!=nil {
 		log.Fatalln(err)
 	}
