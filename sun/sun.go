@@ -7,7 +7,7 @@ import (
 	"time"
 	"math"
 	"fmt"
-	"eddie-handy/com_func"
+	"eddie-handy/edd_func"
 	"errors"
 )
 
@@ -21,7 +21,7 @@ const (
 type object struct {
 	longitude float64//经度
 	latitude float64//纬度
-	zone int //时区
+	zone float64 //时区
 
 	h_m_s float64
 	err error
@@ -34,7 +34,7 @@ type sunTime struct {
 	SunStampTime  int64
 }
 
-func NewObject(lng,lat float64,zone int)*object{
+func NewObject(lng,lat float64,zone float64)*object{
 	return &object{
 		longitude: lng,
 		latitude:  lat,
@@ -59,16 +59,16 @@ func (this *object)thinkTime(all float64)  {
 	//截取小数点后两位
 	AllTime :=fmt.Sprintf("%.2f", allVal)
 
-	Time :=com_func.StringToFloat64(AllTime)
+	Time :=edd_func.StringToFloat64(AllTime)
 	//获取时分秒
 	hour:=math.Floor(Time)
 	min:=math.Floor((Time - hour)*60)
 	sec:=math.Floor(((Time-hour)*60-min)*60)
 	upTimeFormat:=time.Now().Format("2006/01/02")
 
-	hInt:=com_func.Float64ToInt64(hour)
-	mInt:=com_func.Float64ToInt64(min)
-	sInt:=com_func.Float64ToInt64(sec)
+	hInt:=edd_func.Float64ToInt64(hour)
+	mInt:=edd_func.Float64ToInt64(min)
+	sInt:=edd_func.Float64ToInt64(sec)
 
 	//拼接完整时间格式
 	upTimeFormat =fmt.Sprintf("%s %02d:%02d:%02d",upTimeFormat,hInt,mInt,sInt)
@@ -91,10 +91,10 @@ func (this *object) GetSunTime(sun_flag int) (sunT sunTime,err error) {
 	this.getMHS()
 
 	if sun_flag==SUN_RISE {
-		allVal =(180+(+8)*15- this.longitude-this.h_m_s)/ 15
+		allVal =(180+(this.zone)*15- this.longitude-this.h_m_s)/ 15
 		this.thinkTime(allVal)
 	}else if sun_flag==SUN_SET {
-		allVal =(180+(+8)*15-this.longitude+this.h_m_s)/ 15
+		allVal =(180+(this.zone)*15-this.longitude+this.h_m_s)/ 15
 		this.thinkTime(allVal)
 	}else {
 		this.err=errors.New("sun_flag参数传入错误")

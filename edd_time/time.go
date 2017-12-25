@@ -1,4 +1,4 @@
-package my_time
+package edd_time
 
 import (
 	"log"
