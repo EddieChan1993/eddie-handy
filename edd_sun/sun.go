@@ -1,7 +1,7 @@
 /**
 	根据经纬度获取太阳落山的时间
  */
-package sun
+package edd_sun
 
 import (
 	"time"
