@@ -2,23 +2,27 @@ package main
 
 import (
 	"testing"
+	."eddie-handy/edd_log"
 	"eddie-handy/sun"
 	"fmt"
-	"log"
-	"eddie-handy/edd_log"
 )
 
-func TestGetTime(t *testing.T) {
-	sunObject :=sun.NewObject(123.12,32.2,1.8)
-	val, err :=sunObject.GetSunTime(sun.SUN_RISE)
-	if err!=nil{
-		log.Fatal(err)
-	}
+func TestSun(t *testing.T) {
+	sunObj :=sun.NewObject(13.2,23.1,(+8))
+	sunT,_ :=sunObj.GetSunTime(sun.SUN_SET)
+	fmt.Println(sunT)
 
-	fmt.Println(val.SunFormatTime)
-	fmt.Println(val.SunStampTime)
 }
 
-func TestEdd(t *testing.T)  {
-	edd_log.Edd()
+func TestLog(t *testing.T) {
+	Config("one.log")
+	Debugf("Debugf")
+	Infof("Infof")
+	Warnf("Warnf")
+	Errorf("Errorf")
+	Fatalf("Fatalf")
+
+	aa:=LogFile{}
+	aa.Write([]byte("what fox"))
 }
+
