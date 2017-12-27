@@ -1,7 +1,7 @@
 /**
 	常用函数
  */
-package com_func
+package edd_func
 
 import (
 	"log"
@@ -30,4 +30,17 @@ func StringToInt64(str string) int64 {
 func Float64ToInt64(floatParam float64) int64 {
 	str:=strconv.FormatFloat(floatParam, 'f', -1, 64)
 	return StringToInt64(str)
+}
+
+//int->float64
+func IntToFloat64(intParam int)float64 {
+	i:=int64(intParam)
+	str:=strconv.FormatInt(i, 10)
+	return StringToFloat64(str)
+}
+
+//int64->float64
+func Int64ToFloat64(intParam int64) float64 {
+	str:=strconv.FormatInt(intParam, 10)
+	return StringToFloat64(str)
 }

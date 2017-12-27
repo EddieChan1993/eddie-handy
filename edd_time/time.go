@@ -1,4 +1,7 @@
-package my_time
+/**
+	时间的转换
+ */
+package edd_time
 
 import (
 	"log"

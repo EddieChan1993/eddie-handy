@@ -1,3 +1,6 @@
+/**
+	websocket封装
+ */
 package edd_socket
 
 import (
