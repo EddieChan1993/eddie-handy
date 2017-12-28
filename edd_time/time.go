@@ -1,3 +1,6 @@
+/**
+	时间的转换
+ */
 package edd_time
 
 import (

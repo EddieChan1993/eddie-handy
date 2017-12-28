@@ -1,3 +1,6 @@
+/**
+	日志包
+ */
 package edd_log
 
 import (
