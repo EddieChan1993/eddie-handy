@@ -36,12 +36,6 @@ func Echo(ws *websocket.Conn) {
 	uid := getUid()
 
 	defer func() {
-		msg := edd_socket.Message{
-			Data: "离开房间",
-			Type: "del_user",
-		}
-		fmt.Println(msg)
-		wss.SendToAll(msg)
 		wss.CloseUid(uid)
 	}()
 
@@ -70,6 +64,8 @@ func Echo(ws *websocket.Conn) {
 				Type: "send_all",
 			}
 			wss.SendToAll(msg)
+		case "join_group":
+			wss.JoinGroup("one", uid)
 		case "who":
 			//name := getBetweenStr(mess.Data, "@", ":")
 			//sendToOne(ws, mess, name, "send_to_one")
