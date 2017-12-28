@@ -6,7 +6,6 @@ import (
 	."eddie-handy/edd_curl"
 	sun "eddie-handy/edd_sun"
 	"fmt"
-	"log"
 )
 
 func TestSun(t *testing.T) {
@@ -25,7 +24,7 @@ func TestLog(t *testing.T) {
 	Fatalf("Fatalf")
 
 	aa:=LogFile{}
-	aa.Write([]byte("what fox"))
+	aa.Write([]byte("what fox\n"))
 }
 
 func TestCurl(t *testing.T) {
@@ -46,5 +45,5 @@ func TestCurl(t *testing.T) {
 		SetPostData(postData).
 		Post()
 
-	log.Println(result)
+	fmt.Println(result)
 }
