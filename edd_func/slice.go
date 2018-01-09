@@ -25,3 +25,13 @@ func Insert(slice *[]interface{}, index int, value interface{}) {
 	rear := append([]interface{}{}, (*slice)[index:]...)
 	*slice = append(append((*slice)[:index], value), rear...)
 }
+
+//根据元素搜索位置
+func ValSearch(slice []interface{}, value interface{}) int{
+	for k,v:=range slice{
+		if v == value {
+			return k
+		}
+	}
+	return -1
+}
