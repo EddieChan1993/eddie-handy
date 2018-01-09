@@ -66,13 +66,14 @@ function getUrlParam(name) {
     if (r != null) return unescape(r[2]); return null; //返回参数值
 }
 
-function sendMessAll(name,data,type) {
+function sendMessAll(name, data, type) {
     return JSON.stringify(
         {
-            name:name,
-            content:data,
-            type:type,
-            time_stamp:""
+            data: JSON.stringify({
+                name:name,
+                age:123
+            }),
+            type: type
         }
     )
 }

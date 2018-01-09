@@ -16,17 +16,15 @@ type ws struct {
 
 //消息体
 type Message struct {
-	Name      string `json:"name"`
-	Content   interface{} `json:"content"`
-	Type      string `json:"type"`
-	TimeStamp int64  `json:"time_stamp"`
+	Data      interface{} `json:"content"`
+	Type      string      `json:"type"`
+	TimeStamp int64       `json:"time_stamp"`
 }
 
 //用户体
 type User struct {
 	Uid  string
 	conn *websocket.Conn
-	Name string
 }
 
 var (
@@ -40,9 +38,9 @@ func NewWS(wss *websocket.Conn) *ws {
 	return &ws{coon: wss}
 }
 
-//绑定uid
-func (this *ws) BindUid(uid, name string) {
-	client := User{Uid: uid, Name: name, conn: this.coon}
+//绑定uid和coon
+func (this *ws) BindUid(uid string) {
+	client := User{Uid: uid,conn: this.coon}
 
 	member[uid] = &client
 	uidMapWs[uid] = this.coon
@@ -57,9 +55,8 @@ func (this *ws) IsOnline(uid string) bool {
 //断开连接
 func (this *ws) CloseUid(uid string) {
 	msg := Message{
-		Name:member[uid].Name,
-		Content: "离开房间",
-		Type:    "del_user",
+		Data: "离开房间",
+		Type: "del_user",
 	}
 	this.SendToAll(msg)
 

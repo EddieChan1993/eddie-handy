@@ -1,4 +1,4 @@
-package main
+package edd_sun
 
 import (
 	"testing"
@@ -31,7 +31,7 @@ func TestCurl(t *testing.T) {
 	url:= "http://sms-api.luosimao.com/v1/send.json"
 
 	headers:=map[string]string{
-		"Content-Type":"application/x-www-form-urlencoded",
+		"Data-Type":"application/x-www-form-urlencoded",
 		"Authorization":BasicAuth("api","78aac6166f23182bd2eaceae0fba6aa84"),
 	}
 	postData:=map[string]string{

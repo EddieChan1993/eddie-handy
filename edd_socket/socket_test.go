@@ -1,4 +1,4 @@
-package main
+package edd_socket
 
 import (
 	"fmt"
@@ -53,22 +53,19 @@ func Echo(ws *websocket.Conn) {
 
 		switch mess.Type {
 		case "connect":
-			//连接准备
-			username := mess.Name
-			wss.BindUid(uid, username)
+			//连接准备,客户端标识符name和服务端标识符绑定
+			wss.BindUid(uid)
 			msg := edd_socket.Message{
-				Name:    username,
-				Content: mess.Content,
-				Type:    "join_room",
+				Data: mess.Data,
+				Type: "join_room",
 			}
 
 			wss.SendToAll(msg)
 		case "all":
 			//群发
 			msg := edd_socket.Message{
-				Name:    mess.Name,
-				Content: mess.Content,
-				Type:    "send_all",
+				Data: mess.Data,
+				Type: "send_all",
 			}
 			wss.SendToAll(msg)
 		case "join_group":
