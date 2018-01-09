@@ -9,9 +9,9 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"log"
-	"goweb/edd_socket"
 	"golang.org/x/net/websocket"
 	"eddie-handy/edd_log"
+	"eddie-handy/edd_socket"
 )
 
 func init() {

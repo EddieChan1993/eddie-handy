@@ -39,8 +39,7 @@ func TestCurl(t *testing.T) {
 		"message":"go-lang test【环球娃娃】",
 	}
 
-	req:=NewRequst(url)
-	result:=req.
+	result:=NewRequst(url).
 		SetHeaders(headers).
 		SetPostData(postData).
 		Post()

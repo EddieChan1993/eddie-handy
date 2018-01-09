@@ -17,7 +17,7 @@ type ws struct {
 //消息体
 type Message struct {
 	Name      string `json:"name"`
-	Content   string `json:"content"`
+	Content   interface{} `json:"content"`
 	Type      string `json:"type"`
 	TimeStamp int64  `json:"time_stamp"`
 }
