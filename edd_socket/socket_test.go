@@ -10,12 +10,7 @@ import (
 	"encoding/base64"
 	"log"
 	"golang.org/x/net/websocket"
-	"eddie-handy/edd_log"
 )
-
-func init() {
-	edd_log.Config("logs/one.log")
-}
 
 //获取MD5字符串
 func getMd5String(s string) string {
