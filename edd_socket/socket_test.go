@@ -11,7 +11,6 @@ import (
 	"log"
 	"golang.org/x/net/websocket"
 	"eddie-handy/edd_log"
-	"eddie-handy/edd_socket"
 )
 
 func init() {
@@ -25,7 +24,8 @@ func getMd5String(s string) string {
 	return hex.EncodeToString(h.Sum(nil))
 }
 
-//获取连接唯一标识uid
+//用于将当前用户信息和当前websocket.conn关联
+//正式上线，可用数据库用户Id代替
 func getUid() string {
 	b := make([]byte, 48)
 	if _, err := io.ReadFull(rand.Reader, b); err != nil {
@@ -36,7 +36,7 @@ func getUid() string {
 }
 
 func Echo(ws *websocket.Conn) {
-	wss := edd_socket.NewWS(ws)
+	wss := NewWS(ws)
 	uid := getUid()
 
 	defer func() {
@@ -44,7 +44,7 @@ func Echo(ws *websocket.Conn) {
 	}()
 
 	for {
-		var mess edd_socket.Message
+		var mess Message
 		if err := wss.GetMsg(&mess); err != nil {
 			//若当前socket接收不到消息，则已掉线，主动退出for
 			fmt.Println(err)
@@ -55,7 +55,7 @@ func Echo(ws *websocket.Conn) {
 		case "connect":
 			//连接准备,客户端标识符name和服务端标识符绑定
 			wss.BindUid(uid)
-			msg := edd_socket.Message{
+			msg := Message{
 				Data: mess.Data,
 				Type: "join_room",
 			}
@@ -63,7 +63,7 @@ func Echo(ws *websocket.Conn) {
 			wss.SendToAll(msg)
 		case "all":
 			//群发
-			msg := edd_socket.Message{
+			msg := Message{
 				Data: mess.Data,
 				Type: "send_all",
 			}
