@@ -1,5 +1,0 @@
-DEBUG 2017/12/27 13:24:49.167366 sun_test.go:20: Debugf
-INFO 2017/12/27 13:24:49.168367 sun_test.go:21: Infof
-WARN 2017/12/27 13:24:49.168367 sun_test.go:22: Warnf
-ERROR 2017/12/27 13:24:49.168367 sun_test.go:23: Errorf
-FATAL 2017/12/27 13:24:49.168367 sun_test.go:24: Fatalf
