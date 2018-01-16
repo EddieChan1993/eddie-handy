@@ -1,4 +1,4 @@
-package edd_socket
+package v1
 
 import (
 	"fmt"

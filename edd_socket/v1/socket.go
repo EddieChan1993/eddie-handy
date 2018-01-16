@@ -1,19 +1,22 @@
-package edd_socket
+/**
+	websocket封装
+ */
+package v1
 
 import (
-	"github.com/gorilla/websocket"
 	"time"
-	"encoding/json"
 	"log"
+	"encoding/json"
+	"golang.org/x/net/websocket"
 )
 
 type ws struct {
-	conn *websocket.Conn
+	coon *websocket.Conn
 }
 
 //消息体
 type Message struct {
-	Content   interface{} `json:"content"`
+	Data      interface{} `json:"content"`
 	Type      string      `json:"type"`
 	TimeStamp int64       `json:"time_stamp"`
 }
@@ -30,16 +33,17 @@ var (
 	groupMapMember = make(map[string][]*User)
 )
 
-//实例化
-func NewWs(wss *websocket.Conn) *ws {
-	return &ws{conn: wss}
+//实例化ws
+func NewWS(wss *websocket.Conn) *ws {
+	return &ws{coon: wss}
 }
 
-//绑定uid和conn
+//绑定uid和coon
 func (this *ws) BindUid(uid string) {
-	client := User{Uid: uid, conn: this.conn}
+	client := User{Uid: uid,conn: this.coon}
+
 	member[uid] = &client
-	uidMapWs[uid] = this.conn
+	uidMapWs[uid] = this.coon
 }
 
 //是否在线
@@ -49,10 +53,16 @@ func (this *ws) IsOnline(uid string) bool {
 }
 
 //断开连接
-func (this *ws) CloseUid(uid string, msg Message) () {
+func (this *ws) CloseUid(uid string) {
+	msg := Message{
+		Data: "离开房间",
+		Type: "del_user",
+	}
+	this.SendToAll(msg)
+
 	delete(member, uid)
 	delete(uidMapWs, uid)
-	this.conn.Close()
+	this.coon.Close()
 }
 
 //群发消息
@@ -61,8 +71,10 @@ func (this *ws) SendToAll(msg Message) {
 	sendMess, _ := json.Marshal(msg)
 
 	for k, v := range member {
-		if v.conn != this.conn {
-			if err := v.conn.WriteMessage(1, sendMess); err != nil {
+		if v.conn != this.coon {
+			if err := websocket.Message.Send(v.conn, string(sendMess)); err != nil {
+				//如果发送断裂，则该socket掉线
+				//删除相关map
 				delete(member, k)
 				delete(uidMapWs, k)
 				continue
@@ -76,15 +88,13 @@ func (this *ws) GetClientCountByGroup(groupName string) int {
 	return len(groupMapMember[groupName])
 }
 
-//获取某个群的详细信息
 func (this *ws) GetClientByGroup(groupName string) []*User {
 	return groupMapMember[groupName]
 }
 
 //加入某个群
-func (this *ws) JoinGroup(groupName, uid string) []*User {
+func (this *ws) JoinGroup(groupName, uid string) {
 	groupMapMember[groupName] = append(groupMapMember[groupName], member[uid])
-	return groupMapMember[groupName]
 }
 
 //给指定群发消息
@@ -93,8 +103,8 @@ func (this *ws) SendToGroup(groupName string, msg Message) {
 	sendMess, _ := json.Marshal(msg)
 
 	for k, v := range groupMapMember[groupName] {
-		if v.conn != this.conn {
-			if err := v.conn.WriteMessage(1, sendMess); err != nil {
+		if v.conn != this.coon {
+			if err := websocket.Message.Send(v.conn, string(sendMess)); err != nil {
 				//如果发送断裂，则该socket掉线
 				//删除当前组下面的切面中的元素即成员
 				kk := k + 1
@@ -122,7 +132,7 @@ func (this *ws) SendToUid(uid string, msg Message) {
 	msg.TimeStamp = time.Now().Unix()
 	sendMess, _ := json.Marshal(msg)
 
-	if err := toWsCoon.WriteMessage(1, sendMess); err != nil {
+	if err := websocket.Message.Send(toWsCoon, string(sendMess)); err != nil {
 		delete(member, uid)
 		log.Println(err)
 	}
@@ -130,14 +140,10 @@ func (this *ws) SendToUid(uid string, msg Message) {
 
 //解析客户端消息
 func (this *ws) GetMsg(msg *Message) error {
+	var reply string
 	var err error
-	var reply []byte
-	if _, reply, err = this.conn.ReadMessage(); err != nil {
-		return err
+	if err = websocket.Message.Receive(this.coon, &reply); err == nil {
+		json.Unmarshal([]byte(reply), msg)
 	}
-	if err = json.Unmarshal(reply, msg); err != nil {
-		return err
-	}
-
-	return nil
+	return err
 }
