@@ -42,7 +42,7 @@ func luosimaoApi() {
 func baiduSearch() {
 	searchURL := "http://www.baidu.com/s"
 	params:=map[string]string{
-			"wd":"女人是什么?",
+			"wd":"星巴克生在美国的那个城市",
 	}
 	headers:=map[string]string{
 		"Content-Type":"application/x-www-form-urlencoded",
@@ -51,6 +51,7 @@ func baiduSearch() {
 	if err != nil {
 		fmt.Println(err)
 	}
+
 	fmt.Println(string(req))
 }
 //百度ocr
@@ -74,7 +75,7 @@ func baiduOcrToken()  {
 	fmt.Println(baiduToken.AccessToken)
 }
 func TestRequest_Post(t *testing.T) {
-	luosimaoApi()
+	//luosimaoApi()
 	baiduSearch()
-	baiduOcrToken()
+	//baiduOcrToken()
 }
