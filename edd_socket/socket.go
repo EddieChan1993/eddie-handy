@@ -117,15 +117,17 @@ func (this *ws) LeaveGroup(groupName, uid string) {
 }
 
 //发送给指定uid
-func (this *ws) SendToUid(uid string, msg Message) {
+func (this *ws) SendToUid(uid string, msg Message) error {
 	toWsCoon := uidMapWs[uid]
 	msg.TimeStamp = time.Now().Unix()
 	sendMess, _ := json.Marshal(msg)
 
 	if err := toWsCoon.WriteMessage(1, sendMess); err != nil {
 		delete(member, uid)
-		log.Println(err)
+		return err
 	}
+
+	return nil
 }
 
 //解析客户端消息

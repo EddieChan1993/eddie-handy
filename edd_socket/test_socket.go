@@ -77,7 +77,9 @@ func wshandler(w http.ResponseWriter, r *http.Request) {
 				Content: "你好",
 				Type:    "xxxx",
 			}
-			wss.SendToUid(fmt.Sprintf("%s",mess.Content),msg)
+			if err:=wss.SendToUid(fmt.Sprintf("%s",mess.Content),msg);err!= nil {
+				log.Println(err)
+			}
 		case "join_group":
 			aa :=wss.JoinGroup(fmt.Sprintf("%s",mess.Content),uid)
 			fmt.Println(aa)
