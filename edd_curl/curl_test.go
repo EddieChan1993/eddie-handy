@@ -62,8 +62,8 @@ func baiduOcrToken()  {
 	}
 	params:=map[string]string{
 		"grant_type":"client_credentials",
-		"client_id":"oIRXqBOdrQm4T5Kd6TAlxEjz",
-		"client_secret":"YEynXEaBRqbO0P4AOpywts7r5MLSC2Rb",
+		"client_id":"oIRXqBffOdrQddsm4T5Kd6TAlxEjz",
+		"client_secret":"YEfynXEsaBRqbO0P4AOpywts7r5MLSC2Rb",
 	}
 	req,err:=NewRequst(searchURL,headers).SetParms(params).Post()
 	if err != nil {
