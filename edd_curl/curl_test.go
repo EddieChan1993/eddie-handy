@@ -21,11 +21,11 @@ func luosimaoApi() {
 	url := "http://sms-api.luosimao.com/v1/send.json"
 	headers := map[string]string{
 		"Content-Type":  "application/x-www-form-urlencoded",
-		"Authorization": BasicAuth("api", "78aac6166f2318bd2eaceae0fba6aa84"),
+		"Authorization": BasicAuth("api", "78aac6166f2318bd2eadddxx0fba6aa84"),
 	}
 	postData := map[string]string{
 		"mobile":  "18380591566",
-		"message": "go-lang test【环球娃娃】",
+		"message": "go-lang test【xxxx】",
 	}
 	req := NewRequst(url, headers)
 	result, err := req.
